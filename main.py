@@ -2,7 +2,7 @@ import settings
 
 import os
 from notion.client import NotionClient
-from tools import removeNestings
+from tools import TextHandler
 
 client = NotionClient(token_v2=settings.TOKEN_V2)
 
@@ -21,7 +21,7 @@ for i in block_content:
     try:
         text = client.get_record_data('block', i)['properties']['title']
         clean_text = []
-        removeNestings(text, clean_text)
+        TextHandler.removeNestings(text, clean_text)
         f.write(''.join(clean_text) + '\r\n')
     except KeyError:
         continue
