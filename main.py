@@ -2,6 +2,7 @@ import settings
 
 import os
 from notion.client import NotionClient
+from tools import removeNestings
 
 client = NotionClient(token_v2=settings.TOKEN_V2)
 
@@ -19,11 +20,11 @@ f= open(f"{page_title}.txt","w+")
 for i in block_content:
     try:
         text = client.get_record_data('block', i)['properties']['title']
-        clean_text = text[0][0]
-        f.write(clean_text + '\r\n')
+        clean_text = []
+        removeNestings(text, clean_text)
+        f.write(''.join(clean_text) + '\r\n')
     except KeyError:
         continue
 f.close()
 
 # TODO add callback (currently unavailable)
-# TODO somehow text after '(' and ':' disappears, to fix
