@@ -1,14 +1,18 @@
-from git import Repo
 import os
+from time import gmtime, strftime
+
+from git import Repo
+from git.exc import InvalidGitRepositoryError
 
 def git_init(path, name):
-    bare_repo = Repo.init(os.path.join(path, f'{name}'), bare=True)
-    assert bare_repo.bare
+    if InvalidGitRepositoryError:
+        Repo.init(os.path.join(path))
 
 def git_add(path, file):
-    repo = Repo(path)
+    repo = Repo(str(path))
     repo.index.add(file)
-    repo.index.commit("Adding " + file + " to repo")
-    # TODO hmmm it's just a sketch
+    repo.index.commit('')
 
-# TODO add OOP ok :----------DDDD
+    # root_commit = repo.commit(repo.head)
+    # commits = list(root_commit.traverse())
+    
